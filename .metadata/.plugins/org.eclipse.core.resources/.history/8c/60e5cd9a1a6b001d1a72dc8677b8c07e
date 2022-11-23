@@ -1,0 +1,65 @@
+package data_access_layer;
+import java.beans.Statement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import businessLogicLayer.sale_bll;
+import transfer_obj.meaning;
+import transfer_obj.words;
+
+public class addMeaning_dao {
+	private static sale_bll salebll = new sale_bll();
+	private String user= "root";
+
+	private String pass ="";
+	public ArrayList<words> getallsales() throws SQLException {
+		String query = "select * from table2";
+		ArrayList<words> table= new ArrayList<words>();
+		try {
+			Connection con =DriverManager.getConnection("jdbc:mysql://localhost:3306/checking","root","");
+			java.sql.Statement st =  con.createStatement();
+			ResultSet rs = st.executeQuery(query);
+		
+			while(rs.next()) {
+				words row = new words();
+				row.setName((rs.getString(1)));
+	            row.setId(rs.getString(2));
+		        table.add(row);
+			}
+
+		}
+		
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return table;
+	}
+	
+	public void addMeaningdb() throws SQLException {
+		
+		ArrayList<meaning> m = new ArrayList();
+		m = salebll.getlocationplace();
+		System.out.println("ashar your are free now!!!!!!");
+		System.out.println(m.get(0).getWord());
+		System.out.println(m.get(0).getMeanings());
+		String query = "update table2 set meaning = '"+m.get(0).getMeanings()+"' where word = '"+m.get(0).getWord()+"'";
+		
+		ArrayList<words> table= new ArrayList<words>();
+		try {
+			Connection con =DriverManager.getConnection("jdbc:mysql://localhost:3306/checking","root","");
+			java.sql.Statement pst =  con.createStatement();
+			pst.executeUpdate(query);
+		
+
+		}
+		
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+}
